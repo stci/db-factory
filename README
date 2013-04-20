@@ -1,0 +1,1 @@
+db-factory uses definition files with YAML/ERB syntax to define test data (preconditions) for unit PL/SQL testing and can campare actual data with defined expected data.

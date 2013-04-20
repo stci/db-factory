@@ -1,0 +1,8 @@
+== 0.1.0 2013-04-15
+
+* Initial release
+* Known limitations
+  * No YAML file validation
+  * Missing comments
+  * Documentation
+  * Examples

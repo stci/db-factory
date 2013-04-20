@@ -1,0 +1,63 @@
+--- %FORMAT: 1.0
+
+CONSTANTS:
+- HIRE_DATE : &HD
+    <%= Date.today %>
+
+DEFAULTS:
+  tables:
+
+  - "scott.employees": {
+      :hire_date : *HD,
+      :last_name : 'SMITH'
+    }
+
+COMMON:
+  setup:
+    tables:
+
+    - "scott.departements":
+        delete:
+          condition: "1=1"
+        columns:
+          [:departement_id, :departement_name, :coeficient]
+        data:
+        - [1              , 'IT'            , 1.15      ]
+        - [2              , 'Administration' , 1.10      ]
+        - [3              , 'Sales'          , 0.95      ]
+        - [4              , 'Other'          , ~          ]
+
+SALARY:
+  setup:
+    tables:
+
+    - "scott.employees":
+        delete:
+          condition: "last_name = 'SMITH'"
+        columns:
+          [:employee_id, :departement_id, :first_name, :salary]
+        data:
+        - [1          , 1              , 'STEVE'    , 100.00 ]
+        - [2          , 1              , 'BOB'      , 120.00 ]
+        - [3          , 2              , 'COLIN'    , 180.30 ]
+        - [4          , 3              , 'PHIL'    , 280.00 ]
+        - [5          , 4              , 'JHON'    ,  88.00 ]
+
+  postconditions:
+    tables:
+
+    - "scott.employees":
+        filter: "last_name = 'SMITH' and departement_id <> 4"
+        connect keys: [:employee_id]
+        columns:
+          [:employee_id, :salary]
+        stage-1:
+        - [1          , 115.00 ]
+        - [2          , 138.00 ]
+        - [3          , 198.33 ]
+        - [4          , 280.00 ]
+        expected data:
+        - [1          , 115.00 ]
+        - [2          , 138.00 ]
+        - [3          , 198.33 ]
+        - [4          , 266.00 ]

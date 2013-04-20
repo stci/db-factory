@@ -1,0 +1,15 @@
+# configuration file
+
+GENERAL:
+  supported format:
+    - 1.0
+  validation schema: validator.yml
+
+LOG:
+  path      : .
+  filename  : <%= "DBFactory.#{Date.today().to_s()}.log" %>
+  date format: "%Y-%m-%d %H:%M:%S"
+  level      : <%= Logger::DEBUG %>
+
+DIFF:
+  filename_tpl: "diff-#CASE#.yml"
